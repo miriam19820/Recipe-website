@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ספר המתכונים הקסום</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <audio id="bg-music" loop></audio>
+    <div id="floating-container"></div>
+
+    <main class="app-frame">
+        
+        <header id="app-header" class="hidden">
+            <button class="icon-btn" onclick="showScreen('settings-screen')"><i class="fas fa-cog fa-spin-hover"></i></button>
+            <h2 id="page-title">המתכונים שלי</h2>
+            <div class="header-actions">
+                <button class="icon-btn" onclick="toggleMusic()" id="music-btn"><i class="fas fa-music"></i></button>
+                <button class="icon-btn" onclick="showScreen('shopping-list-screen')"><i class="fas fa-shopping-cart"></i></button>
+                <button class="icon-btn" onclick="showScreen('recipe-list-screen')"><i class="fas fa-home"></i></button>
+            </div>
+        </header>
+
+        <div class="content-area">
+            
+            <section id="login-screen" class="screen active">
+                <div class="logo-area">
+                    <i class="fas fa-crown crown-icon"></i>
+                    <h1>ספר המתכונים הקסום</h1>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="username" placeholder="שם משתמש ✨">
+                    <input type="password" id="password" placeholder="סיסמה 🔒">
+                </div>
+                <button class="neon-btn full-width" onclick="handleLogin()">כניסה חגיגית ✨</button>
+                <p class="link-text" onclick="showScreen('register-screen')">עוד לא רשומה? לחצי להרשמה 💕</p>
+            </section>
+
+            <section id="register-screen" class="screen hidden">
+                <h2>הרשמה לאפליקציה 📝</h2>
+                <div class="input-group">
+                    <input type="text" id="reg-username" placeholder="בחרי שם משתמש">
+                    <input type="password" id="reg-password" placeholder="בחרי סיסמה">
+                </div>
+                <button class="neon-btn full-width" onclick="handleRegister()">הרשמי עכשיו! 🚀</button>
+                <button class="secondary-btn" onclick="showScreen('login-screen')">יש לי כבר חשבון</button>
+            </section>
+
+            <section id="recipe-list-screen" class="screen hidden">
+                <div class="user-rank-box">
+                    <span id="rank-display">דרגה: טבח מתחיל 🥚</span>
+                    <span id="xp-display">0 נק'</span>
+                </div>
+
+                <button class="neon-btn magic-btn" onclick="spinRoulette()">
+                    🎲 מה בא לי לאכול? (רולטה)
+                </button>
+
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="חיפוש מתכון..." oninput="filterRecipes()">
+                    <i class="fas fa-search"></i>
+                </div>
+                
+                <button class="neon-btn add-btn" onclick="showAddModal()">
+                    הוספת מתכון חדש <i class="fas fa-plus"></i>
+                </button>
+
+                <div id="recipes-list" class="scroll-container"></div>
+            </section>
+
+            <section id="recipe-detail-screen" class="screen hidden">
+                <button class="back-btn" onclick="showScreen('recipe-list-screen')">חזרה <i class="fas fa-arrow-left"></i></button>
+                
+                <div class="recipe-header-card">
+                    <h2 id="detail-title">כותרת</h2>
+                    <button class="action-btn small-btn" onclick="addToShoppingListFromRecipe()">
+                        <i class="fas fa-cart-plus"></i> לקניות
+                    </button>
+                </div>
+
+                <div class="scroll-container detail-content">
+                    <div class="glass-panel">
+                        <h3><i class="fas fa-carrot"></i> מצרכים:</h3>
+                        <ul id="detail-ingredients" class="ingredients-list"></ul>
+                    </div>
+
+                    <div class="glass-panel">
+                        <h3><i class="fas fa-utensils"></i> הוראות הכנה:</h3>
+                        <div id="detail-instructions" class="steps-list"></div>
+                    </div>
+                    
+                    <button class="neon-btn finish-btn" onclick="finishCooking()">
+                        🏆 סיימתי להכין! (קבל נקודות)
+                    </button>
+                </div>
+
+                <div class="action-bar">
+                    <button class="action-btn play" onclick="toggleSpeech()"><i class="fas fa-play"></i> הקרא לי</button>
+                    <button class="action-btn stop" onclick="stopSpeech()"><i class="fas fa-stop"></i></button>
+                </div>
+            </section>
+
+            <section id="shopping-list-screen" class="screen hidden">
+                <h2>🛒 רשימת קניות</h2>
+                <div class="glass-panel">
+                    <ul id="shopping-items" class="ingredients-list"></ul>
+                    <button class="secondary-btn" onclick="clearShoppingList()">נקה רשימה 🗑️</button>
+                </div>
+            </section>
+
+            <section id="settings-screen" class="screen hidden">
+                <h2>הגדרות אישיות ⚙️</h2>
+                
+                <div class="setting-row">
+                    <label>סגנון עיצוב:</label>
+                    <select id="theme-select" onchange="changeTheme()">
+                        <option value="neon-pink">ילדה (ורוד זוהר)</option>
+                        <option value="neon-blue">חלל (כחול זוהר)</option>
+                        <option value="dad-cool">אבא (כחול-כתום מגניב) 😎</option>
+                        <option value="chef-pro">השף המקצועי (שחור-לבן) 👨‍🍳</option>
+                        <option value="rainbow">קשת בענן (צבעוני) 🌈</option>
+                    </select>
+                </div>
+
+                <div class="setting-row">
+                    <label>מוזיקת רקע:</label>
+                    <select id="music-select" onchange="changeMusicSource()">
+                        <option value="none">ללא מוזיקה 🔇</option>
+                        <option value="calm">רגועה ונעימה 🎵</option>
+                        <option value="happy">פופ מקפיץ 🎸</option>
+                        <option value="electronic">אלקטרוני גיימינג 👾</option>
+                        <option value="piano">פסנתר קלאסי 🎹</option>
+                        <option value="jazz">ג'אז לבישול 🎷</option>
+                    </select>
+                </div>
+
+                <div class="setting-row">
+                    <label>מהירות דיבור:</label>
+                    <input type="range" id="voice-speed" min="0.5" max="2" step="0.1" value="1">
+                </div>
+                
+                <button class="neon-btn" onclick="saveSettings()">שמור וצא</button>
+            </section>
+
+            <div id="add-modal" class="modal hidden">
+                <div class="modal-glass">
+                    <h3>מתכון חדש 📝</h3>
+                    <input type="text" id="new-title" placeholder="שם המתכון">
+                    <textarea id="new-ingredients" placeholder="מצרכים (מופרדים בפסיק)"></textarea>
+                    <textarea id="new-steps" placeholder="שלבי הכנה (מופרדים בנקודה)"></textarea>
+                    <div class="modal-buttons">
+                        <button class="neon-btn" onclick="saveNewRecipe()">שמור</button>
+                        <button class="secondary-btn" onclick="closeModal()">ביטול</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
