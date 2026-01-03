@@ -49,12 +49,12 @@ function createFloatingBackground() {
     const container = document.getElementById('floating-container');
     const icons = ['🍕', '🍩', '🍦', '🍓', '🍭', '🧁', '🍪', '🍟', '🤸', '🤾', '👧', '🧒', '🎈', '🎁', '✨', '🍔', '🎸'];
     container.innerHTML = '';
-    for (let i = 0; i < 25; i++) { 
+    for (let i = 0; i < 30; i++) { 
         const span = document.createElement('span');
         span.classList.add('float-item');
         span.innerText = icons[Math.floor(Math.random() * icons.length)];
         span.style.left = Math.random() * 100 + 'vw';
-        span.style.animationDuration = (Math.random() * 10 + 10) + 's';
+        span.style.animationDuration = (Math.random() * 8 + 5) + 's';
         span.style.animationDelay = (Math.random() * 5) + 's';
         span.style.fontSize = (Math.random() * 2 + 1.5) + 'rem';
         container.appendChild(span);
@@ -191,20 +191,13 @@ function updateMusicIcon() {
     }
 }
 
-// --- ניווט כולל הרחבה ---
+// --- ניווט רגיל (ללא הרחבה) ---
 function showScreen(screenId) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active', 'hidden'));
     document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
     
     document.getElementById(screenId).classList.remove('hidden');
     document.getElementById(screenId).classList.add('active');
-
-    const appFrame = document.querySelector('.app-frame');
-    if (screenId === 'recipe-detail-screen') {
-        appFrame.classList.add('wide-mode');
-    } else {
-        appFrame.classList.remove('wide-mode');
-    }
 
     const header = document.getElementById('app-header');
     if (screenId === 'login-screen' || screenId === 'register-screen') header.classList.add('hidden');

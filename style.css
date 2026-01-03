@@ -1,18 +1,16 @@
 :root {
-    --bg-color: #000000;
+    --bg-color: #1a0b2e;
     --main-color: #ff00de;
     --accent-color: #00f2ff;
     --text-color: #ffffff;
-    
-    /* צבעים אטומים */
-    --panel-bg: #111111; 
-    --panel-border: 1px solid #333;
+    --card-bg: #2d1b4e; 
+    --app-bg: #130f1c;
 }
 
 body {
     margin: 0;
     height: 100vh;
-    background: #030005; /* רקע כמעט שחור לגמרי */
+    background: radial-gradient(circle at center, #430d4b 0%, #000000 100%);
     font-family: 'Rubik', sans-serif;
     display: flex;
     justify-content: center;
@@ -22,94 +20,48 @@ body {
     color: var(--text-color);
 }
 
-/* --- רקע מעופף (יותר פריטים, יותר מהר!) --- */
 #floating-container {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     z-index: 0; pointer-events: none;
 }
 .float-item {
-    position: absolute; font-size: 2rem; 
-    opacity: 0.6; /* קצת יותר בולטים */
+    position: absolute; font-size: 2.8rem; 
+    opacity: 1 !important;
     animation: floatAnimation linear infinite;
-    /* הוספתי חזרה זוהר עדין לרקע כדי שיתאים למסגרת החדשה */
-    text-shadow: 0 0 5px var(--accent-color);
-    filter: brightness(1.2);
+  
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.5); 
+    filter: none; 
 }
 @keyframes floatAnimation {
-    0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
-    20% { opacity: 0.6; }
-    80% { opacity: 0.6; }
-    100% { transform: translateY(-20vh) rotate(720deg); opacity: 0; }
+    0% { transform: translateY(110vh) rotate(0deg); }
+    100% { transform: translateY(-20vh) rotate(360deg); }
 }
 
-/* --- מסגרת האפליקציה החדשה - סייברפאנק זוהר! --- */
+
 .app-frame {
     position: relative; 
     width: 380px; 
     height: 780px;
-    background: #000000; /* התוכן נשאר על רקע שחור נקי */
-    border-radius: 30px;
-    /* ביטלנו את הגבול הישן */
-    border: none; 
-    box-shadow: none;
+    background: var(--app-bg);
+    border-radius: 40px;
+ 
+    border: 3px solid var(--main-color);
+    box-shadow: 0 0 30px var(--main-color), 0 0 60px var(--accent-color), inset 0 0 20px rgba(255, 0, 222, 0.3);
     z-index: 10; 
     display: flex; flex-direction: column; overflow: hidden;
-    padding: 4px; /* רווח קטן בין התוכן למסגרת הזוהרת */
-    
-    transition: width 0.4s ease-in-out, height 0.4s ease-in-out;
-}
-
-/* זה הטריק! האלמנט הזה נמצא *מאחורי* המסגרת ויוצר את הזוהר הצבעוני */
-.app-frame::before {
-    content: '';
-    position: absolute;
-    top: -6px; left: -6px; right: -6px; bottom: -6px; /* קצת יותר גדול מהמסגרת */
-    z-index: -1; /* מאחורה */
-    background: linear-gradient(45deg, #00f2ff, #6a00ff, #ff00de, #00f2ff); /* צבעי הניאון */
-    background-size: 400%; /* בשביל האנימציה */
-    border-radius: 35px; /* פינות עגולות שיתאימו */
-    filter: blur(15px); /* זה מה שיוצר את ה"הילה" החזקה */
-    opacity: 0.9;
-    animation: flowingGradient 10s linear infinite; /* אנימציה שגורמת לצבעים לזוז */
-}
-
-/* שכבה נוספת לחידוד הגבול */
-.app-frame::after {
-    content: '';
-    position: absolute;
-    top: -2px; left: -2px; right: -2px; bottom: -2px;
-    z-index: -1;
-    background: linear-gradient(45deg, #00f2ff, #ff00de);
-    border-radius: 32px;
-}
-
-@keyframes flowingGradient {
-    0% { background-position: 0 0; }
-    50% { background-position: 400% 0; }
-    100% { background-position: 0 0; }
-}
-
-/* מצב רחב (למתכונים) */
-.app-frame.wide-mode {
-    width: 850px;
-    height: 650px;
-    /* במצב רחב הזוהר משתנה קצת */
-}
-.app-frame.wide-mode::before {
-     filter: blur(20px); /* זוהר חזק יותר */
-     background: linear-gradient(45deg, #ff00de, #ffd700, #00f2ff); /* צבעים קצת שונים */
 }
 
 
-/* Header */
 header {
     display: flex; justify-content: space-between; align-items: center;
     padding: 15px 20px;
-    background: #111;
-    border-bottom: 1px solid #333;
+    background: #2d1b4e;
+    border-bottom: 2px solid var(--main-color);
+    z-index: 20;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 .icon-btn {
-    background: none; border: none; color: #ccc; font-size: 1.2rem; cursor: pointer;
+    background: none; border: none; color: #fff; font-size: 1.3rem; cursor: pointer;
     transition: 0.2s; margin-left: 10px;
 }
 .icon-btn:hover { color: var(--accent-color); transform: scale(1.1); text-shadow: 0 0 10px var(--accent-color);}
@@ -117,145 +69,172 @@ header {
 .content-area { 
     flex: 1; 
     padding: 20px; 
+    padding-bottom: 120px; 
     overflow-y: auto; 
     position: relative;
-    background: #050505; /* רקע פנימי כהה */
 }
 
-/* סידור המסך של המתכון - 2 עמודות */
+
 #recipe-detail-screen .detail-content {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    height: 100%;
+    grid-template-rows: auto auto; 
+    gap: 15px;
     align-items: start;
 }
-@media (max-width: 500px) {
+@media (max-width: 400px) {
     #recipe-detail-screen .detail-content { grid-template-columns: 1fr; }
 }
 
-/* כפתורים */
-.neon-btn {
-    /* כפתורים שמתאימים למסגרת החדשה */
-    background: linear-gradient(90deg, var(--main-color), var(--accent-color));
-    border: none; padding: 12px; border-radius: 8px;
-    color: white; font-weight: bold; width: 100%;
-    margin-top: 15px; cursor: pointer; transition: 0.2s;
-    box-shadow: 0 0 10px var(--main-color);
+.finish-btn {
+    background: linear-gradient(90deg, #00b894, #00cec9);
+    margin-top: 60px; 
+    margin-bottom: 20px;
+    grid-column: span 2;
+    padding: 15px;
+    font-size: 1.1rem;
+    box-shadow: 0 0 20px rgba(0, 184, 148, 0.4);
+    border: 1px solid #fff;
+    border-radius: 12px;
+    color: white; font-weight: bold; cursor: pointer;
 }
-.neon-btn:hover { transform: translateY(-2px); box-shadow: 0 0 20px var(--main-color), 0 0 5px white; }
+.finish-btn:hover { transform: scale(1.02); box-shadow: 0 0 30px rgba(0, 184, 148, 0.6); }
+
+
+.neon-btn {
+    background: linear-gradient(90deg, var(--main-color), #7b00ff);
+    border: none; padding: 12px; border-radius: 12px;
+    color: white; font-weight: bold; width: 100%;
+    box-shadow: 0 0 15px var(--main-color);
+    margin-top: 15px; cursor: pointer; transition: 0.2s;
+    border: 1px solid white;
+}
+.neon-btn:hover { transform: translateY(-2px); box-shadow: 0 0 25px var(--main-color); }
 
 .magic-btn {
-    background: linear-gradient(90deg, #ff9f1c, #ff0055, #6a00ff);
+    background: linear-gradient(90deg, #ff9f1c, #ff0055);
     margin-bottom: 20px;
 }
-.finish-btn {
-    background: linear-gradient(90deg, #00b894, #00f2ff);
-    margin-top: 10px;
-    grid-column: span 2;
-}
-.secondary-btn {
-    background: #333; 
-    border: 1px solid #555;
-    padding: 10px; width: 100%; border-radius: 8px; 
-    color: #fff; margin-top: 10px; cursor: pointer;
-}
-.secondary-btn:hover { background: #444; border-color: var(--accent-color);}
 
-/* כרטיסי מתכון ברשימה */
+.secondary-btn {
+    background: #2d1b4e; border: 1px solid #7b00ff;
+    padding: 10px; width: 100%; border-radius: 12px; 
+    color: #ddd; margin-top: 10px; cursor: pointer;
+}
+
+
 .recipe-card {
-    background: #111;
-    border: 1px solid #333;
-    border-radius: 12px; padding: 15px; margin-bottom: 10px;
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 15px; padding: 15px; margin-bottom: 12px;
     display: flex; justify-content: space-between; align-items: center;
     cursor: pointer; transition: 0.2s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
 }
 .recipe-card:hover {
-    background: #1a1a1a;
-    border-color: var(--accent-color);
-    box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
+    background: #3b2364; border-color: var(--accent-color);
+    transform: translateX(-5px);
+    box-shadow: 0 0 15px var(--accent-color);
 }
 .recipe-card h3 { margin: 0; font-size: 1.1rem; color: #fff; }
-.recipe-emoji { font-size: 1.5rem; }
+.recipe-emoji { font-size: 1.8rem; }
 
-/* כרטיס מודגש לרולטה */
 .highlight-card {
-    background: #222 !important;
-    border: 2px solid var(--main-color) !important;
-    box-shadow: 0 0 20px var(--main-color) !important;
-    transform: scale(1.02);
+    border: 2px solid var(--accent-color) !important;
+    background: #4b0082 !important;
+    transform: scale(1.05);
+    box-shadow: 0 0 30px var(--accent-color) !important;
 }
 
-/* אינפוטים */
 input, textarea, select {
-    width: 100%; padding: 10px; margin: 8px 0;
-    background: #222;
-    border: 1px solid #444;
-    border-radius: 8px;
-    color: white; outline: none; box-sizing: border-box;
+    width: 100%; padding: 12px; margin: 8px 0;
+    background: #000; border: 1px solid var(--main-color);
+    border-radius: 10px; color: white; outline: none; box-sizing: border-box;
 }
-input:focus { border-color: var(--accent-color); background: #2a2a2a; box-shadow: 0 0 10px var(--accent-color);}
+input:focus { border-color: var(--accent-color); box-shadow: 0 0 10px var(--accent-color); }
 
 .hidden { display: none !important; }
 
-/* פאנלים פנימיים */
+
 .glass-panel {
-    background: #161616; 
-    border: 1px solid #333;
-    padding: 15px; border-radius: 12px; 
+    background: var(--card-bg); 
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 15px; border-radius: 15px; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     height: 100%; 
-    overflow-y: auto;
 }
 .glass-panel h3 { 
     color: var(--accent-color); margin-top: 0; 
-    font-size: 1.2rem; border-bottom: 2px solid #333; padding-bottom: 10px; 
-    text-shadow: 0 0 5px var(--accent-color);
+    font-size: 1.1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; 
 }
-.ingredients-list li { margin-bottom: 5px; color: #ddd; border-bottom: 1px solid #222; padding: 5px 0;}
-.steps-list div { margin-bottom: 10px; color: #ddd; background: #0a0a0a; padding: 10px; border-radius: 5px; border: 1px solid #333;}
+.ingredients-list li { margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.95rem; }
+.steps-list div { margin-bottom: 10px; line-height: 1.4; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 8px; font-size: 0.95rem;}
 .steps-list b { color: var(--main-color); margin-left: 5px; }
 
-/* אזור הדרגה */
 .user-rank-box {
-    background: #111;
-    border: 1px solid var(--accent-color);
-    border-radius: 8px; padding: 10px 15px; margin-bottom: 15px;
-    display: flex; justify-content: space-between; font-weight: bold; color: var(--accent-color);
-    box-shadow: 0 0 10px rgba(0, 242, 255, 0.2);
+    background: #2d1b4e; border: 1px solid var(--main-color);
+    border-radius: 12px; padding: 12px 20px; margin-bottom: 20px;
+    display: flex; justify-content: space-between; font-weight: bold; color: white;
 }
 
-/* לוגו */
-.crown-icon { font-size: 4rem; color: gold; margin-bottom: 15px; display: block; text-shadow: 0 0 20px var(--main-color);}
-#login-screen, #register-screen { text-align: center; padding-top: 30px; }
+.crown-icon { font-size: 4rem; color: gold; margin-bottom: 15px; display: block; text-shadow: 0 0 20px orange;}
+#login-screen, #register-screen { text-align: center; padding-top: 40px; }
 
-/* בקרת שמע */
 .action-bar {
-    position: absolute; bottom: 20px; left: 0; right: 0;
-    display: flex; justify-content: center; gap: 10px; padding: 0 20px; z-index: 100;
+    position: absolute; 
+    bottom: 0; left: 0; right: 0;
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    gap: 15px; 
+    padding: 20px; 
+    z-index: 30;
+    background: #130f1c; 
+    border-top: 3px solid var(--accent-color);
+    box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
+    border-radius: 0 0 35px 35px;
 }
+
 .action-btn {
-    border: none; border-radius: 50px; padding: 10px 20px;
+    border: none; border-radius: 12px; padding: 12px 20px;
     color: white; cursor: pointer; font-weight: bold;
-    transition: 0.2s; flex: 1;
+    transition: 0.2s; font-size: 1rem;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    white-space: nowrap;
 }
-.action-btn.play { background: linear-gradient(90deg, #00b894, #00f2ff); }
-.action-btn.stop { background: linear-gradient(90deg, #d63031, #ff0055); flex: 0.5; }
-.action-btn.small-btn { padding: 5px 10px; font-size: 0.8rem; background: #333; border: 1px solid #555; }
-.action-btn.small-btn:hover { background: #555; border-color: var(--accent-color);}
+.action-btn.play { 
+    background: linear-gradient(90deg, #00b894, #00f2ff); 
+    flex: 2; 
+    box-shadow: 0 0 15px #00b894;
+    border: 1px solid white;
+}
+.action-btn.play:active { transform: scale(0.95); }
+
+.action-btn.stop { 
+    background: linear-gradient(90deg, #ff4757, #ff6b81); 
+    flex: 1; 
+    box-shadow: 0 0 15px #ff4757;
+    border: 1px solid white;
+}
+.action-btn.stop:active { transform: scale(0.95); }
+
+.action-btn.small-btn { 
+    padding: 6px 12px; font-size: 0.9rem; 
+    background: transparent; border: 1px solid var(--accent-color); color: var(--accent-color); 
+    flex: initial;
+}
 
 .recipe-header-card { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;}
-.recipe-header-card h2 { margin: 0; font-size: 1.8rem; color: white; text-shadow: 0 0 10px var(--accent-color);}
+.recipe-header-card h2 { margin: 0; font-size: 1.5rem; color: white; text-shadow: 0 0 10px var(--accent-color);}
 .back-btn { background: #222; color: #fff; border: 1px solid var(--accent-color); padding: 8px 15px; border-radius: 20px; cursor: pointer; margin-bottom: 10px;}
-.back-btn:hover { background: var(--accent-color); color: #000;}
 
-/* מודאל */
+
 .modal {
     position: absolute; top:0; left:0; width:100%; height:100%;
     background: rgba(0,0,0,0.9); display: flex; justify-content: center; align-items: center; z-index: 100;
 }
 .modal-glass {
-    background: #111; padding: 25px; border-radius: 15px; width: 90%;
-    border: 2px solid var(--main-color);
-    box-shadow: 0 0 30px var(--main-color);
+    background: var(--card-bg); padding: 25px; border-radius: 20px; width: 90%;
+    border: 2px solid var(--main-color); box-shadow: 0 0 30px rgba(255, 0, 222, 0.3);
 }
-.modal h3 { text-align: center; color: var(--main-color); margin-bottom: 20px; }
+.modal h3 { text-align: center; color: white; margin-bottom: 20px; }
